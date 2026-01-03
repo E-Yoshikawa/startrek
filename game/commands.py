@@ -193,7 +193,8 @@ class CommandHandler:
                 actual_row, actual_col = new_quadrant._find_empty_sector()
             else:
                 actual_row, actual_col = final_sect_row, final_sect_col
-                new_quadrant.sector_map[actual_row][actual_col] = EntityType.ENTERPRISE
+            # Place Enterprise at new position
+            new_quadrant.sector_map[actual_row][actual_col] = EntityType.ENTERPRISE
 
         self.enterprise.set_position(
             new_quad_row, new_quad_col,
