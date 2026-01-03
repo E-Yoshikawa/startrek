@@ -235,8 +235,8 @@ class CommandHandler:
         if not self.enterprise.can_use_srs():
             return CommandResult(False, "Short range sensors are damaged!")
 
-        # The actual display is handled by the display module
-        return CommandResult(True, "SHORT RANGE SENSOR SCAN")
+        # SRS is always displayed on screen, so just refresh (no message needed)
+        return CommandResult(True, "")
 
     def execute_lrs(self) -> CommandResult:
         """LRS - Long Range Sensor Scan."""
