@@ -529,10 +529,54 @@ RATING = (撃破クリンゴン総数 ÷ 経過日数) × 1000
     </tr>
 </table>
 
+<h3>9.1 修理システム詳細</h3>
+
+<div class="section-box">
+<pre>
+damage[system] の値:
+  0    = 正常（故障なし）
+  負値 = 故障中（絶対値が修理に必要な日数）
+</pre>
+</div>
+
+<p><strong>ダメージの発生:</strong></p>
+<ul>
+    <li>被弾時に60%の確率でランダムなシステムが損傷</li>
+    <li>ダメージ量: <code>-0.5</code> ～ <code>-3.0</code>（累積）</li>
+</ul>
+
+<p><strong>修理速度:</strong></p>
+<table>
+    <tr>
+        <th>状態</th>
+        <th>修理レート</th>
+        <th>例: damage = -3.0 の場合</th>
+    </tr>
+    <tr>
+        <td>ドッキング中</td>
+        <td>1.0</td>
+        <td>3日で修理完了</td>
+    </tr>
+    <tr>
+        <td>航行中</td>
+        <td>0.1</td>
+        <td>30日で修理完了</td>
+    </tr>
+</table>
+
+<div class="section-box">
+<pre>
+修理計算:
+  damage += repair_rate × time_elapsed
+  damageが0以上になったら修理完了
+</pre>
+</div>
+
 <div class="note">
-    <strong>修理方法:</strong><br>
-    ・時間経過で自動修理（ゆっくり）<br>
-    ・スターベースでドッキングして修理（即時）
+    <strong>ポイント:</strong><br>
+    ・DAMコマンドで表示される数値（例: -2.5）は修理完了までの残り日数<br>
+    ・ドッキング中は10倍速で修理される<br>
+    ・ダメージは累積するので、連続被弾すると修理時間が増える
 </div>
 
 <h2>10. 画面設計イメージ</h2>
