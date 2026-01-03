@@ -235,3 +235,19 @@ freq = np.linspace(100, 1000, samples)
 
 オリジナルのBASIC版はパブリックドメイン。
 このPython実装もMITライセンスとして公開。
+
+---
+
+## バグ修正履歴
+
+| 日付 | コミット | 問題 | 原因 | 修正内容 |
+|------|----------|------|------|----------|
+| 2026-01-03 | `c8db86b` | 同クオドラント内でNAV移動後、SRSにEnterpriseが表示されない | 衝突回避時（星などを避けた場合）に`sector_map`への配置が`else`ブロック内のみだった | `EntityType.ENTERPRISE`の配置を`if/else`の外に移動し、常に実行されるよう修正 |
+| 2026-01-03 | `e5dc819` | 銀河境界を超えようとすると、Enterpriseが消失する | `remove_enterprise()`後に境界チェックで`return`した際、元の位置に再配置していなかった | 境界エラー時に`sector_map`にEnterpriseを復元してから`return` |
+| 2026-01-03 | `1d39df6` | SRSコマンドで「SHORT RANGE SENSOR SCAN」が一瞬表示されて消える | SRSは常に画面表示されているのにメッセージを返していた。`wait_commands`に含まれていないため即座に画面クリア | メッセージを空文字に変更し、ちらつきを解消 |
+
+### 修正時の教訓
+
+1. **NAV移動処理**: `remove_enterprise()`を呼んだ後は、**全ての`return`パス**でEnterpriseを再配置する必要がある
+2. **画面表示**: 情報を表示するコマンドは`wait_commands`リストに追加するか、メッセージを空にする
+3. **EntityType比較**: `entity.name == 'KLINGON'`ではなく`entity == EntityType.KLINGON`を使用
