@@ -163,6 +163,8 @@ class CommandHandler:
             if new_quad_row < 0 or new_quad_row >= 8 or \
                new_quad_col < 0 or new_quad_col >= 8:
                 self.sound.play_hit()
+                # Restore Enterprise to original position
+                current_quadrant.sector_map[self.enterprise.sector_row][self.enterprise.sector_col] = EntityType.ENTERPRISE
                 return CommandResult(
                     False,
                     "You have attempted to cross the galactic barrier.\n"
