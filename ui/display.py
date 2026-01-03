@@ -13,6 +13,15 @@ from game.enterprise import Enterprise, Condition
 class Display:
     """Handles all game display output."""
 
+    # ANSI color codes
+    COLORS = {
+        'RED': "\033[91m",
+        'YELLOW': "\033[93m",
+        'GREEN': "\033[92m",
+        'CYAN': "\033[96m",
+        'RESET': "\033[0m",
+    }
+
     # Symbol mappings for entities
     SYMBOLS = {
         EntityType.EMPTY: " . ",
@@ -89,6 +98,17 @@ class Display:
         )
         condition = self.enterprise.get_condition(quadrant.klingons)
 
+        # Colorize condition based on status
+        condition_colors = {
+            Condition.RED: self.COLORS['RED'],
+            Condition.YELLOW: self.COLORS['YELLOW'],
+            Condition.GREEN: self.COLORS['GREEN'],
+            Condition.DOCKED: self.COLORS['CYAN'],
+        }
+        color = condition_colors.get(condition, '')
+        reset = self.COLORS['RESET']
+        colored_condition = f"{color}{condition.value}{reset}"
+
         print(f"STARDATE: {self.galaxy.stardate:.1f}    "
               f"TIME LEFT: {self.galaxy.time_remaining:.0f} DAYS    "
               f"KLINGONS: {self.galaxy.total_klingons}    "
@@ -96,7 +116,7 @@ class Display:
         print()
         print(f"QUADRANT: {quadrant.name}  [{self.enterprise.quadrant_row+1},"
               f"{self.enterprise.quadrant_col+1}]"
-              f"              CONDITION: {condition.value}")
+              f"              CONDITION: {colored_condition}")
         print("-" * 78)
 
     def print_short_range_scan(self) -> None:
